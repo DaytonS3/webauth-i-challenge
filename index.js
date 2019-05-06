@@ -1,5 +1,6 @@
 const express = require("express");
 const db = require("./data/dbHelp");
+const bcrypt = require("bcryptjs");
 
 const server = express();
 
@@ -20,7 +21,11 @@ server.get("/api/users", (req, res) => {
 });
 
 server.post("/api/users", (req, res) => {
-  db.add(req.body)
+  users = req.body;
+  const hash = bcrypt.hashSync(users.password, 10);
+  users.password = hash;
+
+  db.add(users)
     .then(user => {
       res.status(200).json(user);
     })
