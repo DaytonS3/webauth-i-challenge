@@ -19,6 +19,16 @@ server.get("/api/users", (req, res) => {
     });
 });
 
+server.post("/api/users", (req, res) => {
+  db.add(req.body)
+    .then(user => {
+      res.status(200).json(user);
+    })
+    .catch(err => {
+      res.status(500).json(err);
+    });
+});
+
 server.listen(5000, () => {
   console.log("server running...");
 });
